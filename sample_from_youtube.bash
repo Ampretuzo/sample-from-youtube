@@ -17,9 +17,10 @@ function append_video_id {
 			# Match video id in youtube url query string:
 			idx = match($2, /\?v[^&]*/)
 			if (idx == 0) {
-				printf("Could not extract video id from %s for \"%s\"\n", $2, $1) > "/dev/stderr"
-				exit 1
+				printf("Could not extract video id from %s for \"%s\", skipping\n", $2, $1) > "/dev/stderr"
+				next
 			}
+			# +=3 because of "?v" prefix:
 			print $0, substr($2, RSTART + 3, RLENGTH - 3)
 		}'
 }
@@ -28,7 +29,7 @@ function append_video_id {
 # answer: NO! what about other users who might be downloading samples in parallel (Really???)?
 # NOTE: I could also have made per-process unique prefix...
 DOWNLOADED_FILES=$(mktemp -t "sample_from_youtube_downloaded_files_XXXXXXX")
-trap "(cat $DOWNLOADED_FILES | xargs rm) && rm $DOWNLOADED_FILES" EXIT
+trap "(cat $DOWNLOADED_FILES | xargs -r rm) && rm $DOWNLOADED_FILES" EXIT
 
 function download_audio {
 	declare -A id_to_file
@@ -97,4 +98,4 @@ function crop_sample {
 	done
 }
 
-./parse.awk samples.example | append_video_id | download_audio | crop_sample
+./parse.awk samples.example | append_video_id # | download_audio | crop_sample
