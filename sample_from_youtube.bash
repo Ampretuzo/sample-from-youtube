@@ -6,6 +6,24 @@ then
 	exit 1
 fi
 
+function append_video_id {
+	awk '
+		BEGIN {
+			FS=","
+			OFS=","
+		}
+
+		{
+			# Match video id in youtube url query string:
+			idx = match($2, /\?v[^&]*/)
+			if (idx == 0) {
+				printf("Could not extract video id from %s for \"%s\"\n", $2, $1) > "/dev/stderr"
+				exit 1
+			}
+			print $0, substr($2, RSTART + 3, RLENGTH - 3)
+		}'
+}
+
 # NOTE: couldn't I have just deleted temp files with 'sample_from_youtube_downloaded_files_' prefix?
 # answer: NO! what about other users who might be downloading samples in parallel (Really???)?
 # NOTE: I could also have made per-process unique prefix...
@@ -79,18 +97,4 @@ function crop_sample {
 	done
 }
 
-./parse.awk samples.example | awk '
-BEGIN {
-	FS=","
-	OFS=","
-}
-
-{
-	# Match video id in youtube url query string:
-	idx = match($2, /\?v[^&]*/)
-	if (idx == 0) {
-        printf("Could not extract video id from %s for \"%s\"\n", $2, $1) > "/dev/stderr"
-        exit 1
-    }
-	print $0, substr($2, RSTART + 3, RLENGTH - 3)
-}' | download_audio | crop_sample
+./parse.awk samples.example | append_video_id | download_audio | crop_sample
