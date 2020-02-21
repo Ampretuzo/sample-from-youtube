@@ -100,5 +100,6 @@ function crop_sample {
 
 SAMPLES=${SAMPLES:-~/samples}
 SAMPLES_DIR=${SAMPLES_DIR:-~/samples.out}
+mkdir -p "$SAMPLES_DIR"
 
 ./parse.awk $SAMPLES | append_video_id | download_audio | crop_sample
