@@ -87,7 +87,7 @@ function crop_sample {
 			-to "$END" \
 			-n \
 			-loglevel "quiet" \
-			"${FNAME}.wav" \
+			"${SAMPLES_DIR}/${FNAME}.wav" \
 			2>/dev/null
 		if test 0 == $?
 		then
@@ -98,4 +98,7 @@ function crop_sample {
 	done
 }
 
-./parse.awk samples.example | append_video_id # | download_audio | crop_sample
+SAMPLES=${SAMPLES:-~/samples}
+SAMPLES_DIR=${SAMPLES_DIR:-~/samples.out}
+
+./parse.awk $SAMPLES | append_video_id | download_audio | crop_sample
