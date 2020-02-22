@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+function mark_collected {
+	while IFS=',' read -ra LINE
+	do
+		FNAME="${LINE[0]}"
+		YT_URL="${LINE[1]}"
+		START="${LINE[2]}"
+		END="${LINE[3]}"
+
+		ALREADY_COLLECTED="0"
+		if test -f "${SAMPLES_DIR}/${FNAME}.wav"
+		then
+			ALREADY_COLLECTED="1"
+		fi
+
+		echo $FNAME,$YT_URL,$START,$END,$ALREADY_COLLECTED
+	done
+}
+
 function append_video_id {
 	awk '
 		BEGIN {
@@ -34,7 +52,7 @@ function download_audio {
 		YT_URL="${LINE[1]}"
 		START="${LINE[2]}"
 		END="${LINE[3]}"
-		YT_ID="${LINE[4]}"
+		YT_ID="${LINE[5]}"
 
 		if test -n "${id_to_file[$YT_ID]}"
 		then
@@ -123,6 +141,7 @@ SAMPLES_DIR=${SAMPLES_DIR:-~/samples.out}
 mkdir -p "$SAMPLES_DIR"
 
 ./parse.awk $SAMPLES \
+	| mark_collected \
 	| append_video_id \
 	| download_audio \
 	| crop_sample
