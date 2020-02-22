@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-if ! command -v youtube-dl 1>/dev/null
-then
-	echo "Please install youtube-dl first!" 1>&2
-	exit 1
-fi
-
 function append_video_id {
 	awk '
 		BEGIN {
@@ -98,8 +92,37 @@ function crop_sample {
 	done
 }
 
+if ! command -v youtube-dl 1>/dev/null
+then
+	echo "Please install youtube-dl first!" 1>&2
+	exit 1
+fi
+
+while getopts ":s:o:" opt; do
+	case ${opt} in
+		s)
+			SAMPLES=$OPTARG
+			;;
+		o)
+			SAMPLES_DIR=$OPTARG
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" 1>&2
+			exit 1
+			;;
+		:)
+			echo "Invalid option: -$OPTARG requires an argument" 1>&2
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND-1))
+
 SAMPLES=${SAMPLES:-~/samples}
 SAMPLES_DIR=${SAMPLES_DIR:-~/samples.out}
 mkdir -p "$SAMPLES_DIR"
 
-./parse.awk $SAMPLES | append_video_id | download_audio | crop_sample
+./parse.awk $SAMPLES \
+	| append_video_id \
+	| download_audio \
+	| crop_sample
