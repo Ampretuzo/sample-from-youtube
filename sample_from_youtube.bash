@@ -68,7 +68,7 @@ function download_audio {
 				--audio-quality 0 \
 				--output "$TMPFILE" \
 				"$YT_URL"
-			if test 0 != "$?"
+			if test 0 == "$?"
 			then
 				echo "Downloading $YT_ID complete." 1>&2
 				# TODO: handle bad cases later...
