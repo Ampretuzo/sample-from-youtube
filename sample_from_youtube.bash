@@ -10,6 +10,7 @@ function skip_collected {
 
 		if test -f "${SAMPLES_DIR}/${FNAME}.wav"
 		then
+			echo "Skipping \"$FNAME\", file already exists..." 1>&2
 			continue
 		fi
 
