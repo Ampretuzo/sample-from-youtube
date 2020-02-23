@@ -27,6 +27,7 @@ function append_video_id {
 
 		{
 			# Match video id in youtube url query string:
+			# TODO: won''t work if "v" key doesn''t come first.
 			idx = match($2, /\?v[^&]*/)
 			if (idx == 0) {
 				printf("Could not extract video id from %s for \"%s\", skipping\n", $2, $1) > "/dev/stderr"
