@@ -180,8 +180,14 @@ then
 	exit 1
 fi
 
-while getopts ":s:o:" opt; do
+USAGE="Usage: $(basename "$0") [-h] [-s samples_file] [-o output_directory]"
+
+while getopts ":s:o:h" opt; do
 	case ${opt} in
+		h)
+			echo "$USAGE"
+			exit 0
+			;;
 		s)
 			SAMPLES=$OPTARG
 			;;
@@ -190,10 +196,12 @@ while getopts ":s:o:" opt; do
 			;;
 		\?)
 			echo "Invalid option: -$OPTARG" 1>&2
+			echo "$USAGE" 1>&2
 			exit 1
 			;;
 		:)
 			echo "Invalid option: -$OPTARG requires an argument" 1>&2
+			echo "$USAGE" 1>&2
 			exit 1
 			;;
 	esac
