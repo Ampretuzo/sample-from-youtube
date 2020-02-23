@@ -16,6 +16,12 @@ Takes descriptive file like this:
 
 And "materializes" it as audio files:
 ```console
+$ ./sample_from_youtube.bash
+Downloading 5ZRQYDoDRkU complete.
+Done: Tropea_‎–_Short_Trip_To_Space_(1977)__Little_Snippet.wav
+Done: Tropea_‎–_Short_Trip_To_Space_(1977)__beginning_of_Short_Trip_To_Space.wav
+Downloading HjpjG030yD8 complete.
+Done: From's_Power_On!__Drum_break!.wav
 $ ls ~/samples.out
 'From'\''s_Power_On!__Drum_break!.wav'
 'Tropea_–_Short_Trip_To_Space_(1977)__beginning_of_Short_Trip_To_Space.wav'
