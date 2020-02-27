@@ -131,10 +131,13 @@ function download_audio {
 				--audio-quality 0 \
 				--output "$TMPFILE" \
 				"$YT_URL"
-			if test 0 == "$?"
+			youtube_dl_status="$?"
+			if test 0 == "$youtube_dl_status"
 			then
 				echo "Downloading $YT_ID complete." 1>&2
-				# TODO: handle bad cases later...
+			else
+				echo "Failed to download $YT_ID. `youtube-dl` exit status: $youtube_dl_status" 1>&2
+				continue
 			fi
 
 			echo $TMPFILE >> $DOWNLOADED_FILES
