@@ -90,13 +90,12 @@ function append_video_id {
 
 		{
 			# Match video id in youtube url query string:
-			# TODO: won''t work if "v" key doesn''t come first.
-			idx = match($2, /\?v[^&]*/)
-			if (idx == 0) {
+			idx = match($2, /(\?v|&v)[^&]*/)
+			if (idx == 0 || RLENGTH - 3 != 11) {
 				printf("Could not extract video id from %s for \"%s\", skipping\n", $2, $1) > "/dev/stderr"
 				next
 			}
-			# +=3 because of "?v" prefix:
+			# +=3 because of "?v" or "&v" prefix:
 			print $0, substr($2, RSTART + 3, RLENGTH - 3)
 		}'
 }
