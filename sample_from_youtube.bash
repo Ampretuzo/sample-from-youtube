@@ -124,6 +124,7 @@ function download_audio {
 		else
 			TMPFILE=$(mktemp -t "sample_from_youtube_${YT_ID}_XXXXX.wav")
 
+			echo "Starting $YT_ID download..." 1>&2
 			youtube-dl \
 				--quiet \
 				--no-continue \
@@ -158,6 +159,7 @@ function crop_sample {
 
 		# TODO: $END needs +1 second.
 		ffmpeg \
+			-nostdin \
 			-i "$AUDIO_FILE" \
 			-ss "$START" \
 			-to "$END" \
