@@ -34,3 +34,13 @@ $ ls ~/samples.out
 git clone 'https://github.com/Ampretuzo/sample-from-youtube.git' "sample-from-youtube"
 ln "sample-from-youtube/sample_from_youtube.bash" "/usr/local/bin/sample_from_youtube"
 ```
+
+I like to set it up as a cron job:
+```console
+$ crontab -l
+PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
+LD_LIBRARY_PATH=/usr/local/lib
+
+30 00,15 * * * sample_from_youtube
+```
+That way I can just edit `~/samples` and forget about running the script.
