@@ -37,8 +37,6 @@ function parse {
 			exit 2
 		}
 
-		# TODO: record_name and yt_url check.
-
 		timestamps_string = $1 # Like "0:12 - 0:19"
 		sample_name = $2
 
