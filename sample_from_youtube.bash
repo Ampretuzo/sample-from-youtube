@@ -14,6 +14,11 @@ function parse {
 		OFS = ","
 	}
 
+	# A Comment:
+	/^#/ {
+		next
+	}
+
 	# Video link:
 	/^-/ {
 		if (NF != 2) {
