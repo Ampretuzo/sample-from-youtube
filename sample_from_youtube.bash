@@ -128,6 +128,7 @@ function download_audio {
 
 			echo "Starting $YT_ID download..." 1>&2
 			youtube-dl \
+				--no-cache-dir \
 				--quiet \
 				--no-continue \
 				--no-playlist \
